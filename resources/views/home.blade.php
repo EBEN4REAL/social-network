@@ -15,7 +15,7 @@
         @include('profile.sidebar')
 
          <div class="col-md-9 ">
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="padding-bottom: 300px">
                 <div class="panel-heading">Dashboard</div>
 
                 <div class="panel-body">

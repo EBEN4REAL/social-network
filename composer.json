@@ -6,6 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
+        "FortAwesome/Font-Awesome": "*",
+        "components/font-awesome": "^4.7",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0"
     },
@@ -31,17 +33,20 @@
     "scripts": {
         "post-root-package-install": [
             "php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+           
         ],
         "post-create-project-cmd": [
             "php artisan key:generate"
         ],
         "post-install-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "php artisan optimize"
+            "php artisan optimize",
+            " php artisan vendor:publish --tag=public --force"
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize"
+            "php artisan optimize",
+            " php artisan vendor:publish --tag=public --force"
         ]
     },
     "config": {

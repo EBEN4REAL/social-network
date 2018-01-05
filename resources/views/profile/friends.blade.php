@@ -60,7 +60,7 @@
 							</div>
 
 							  <div class="col-sm-4">
-							  <h4></h4> <strong> {{ucwords($friends->name)}}</strong> </h4>
+							  <h4></h4> <strong> {{ucwords($friend->name)}}</strong> </h4>
 								
 								<p>Gender- {{$friend->gender}} </p>
 								<p>Email- {{$friend->email}} </p>
@@ -69,7 +69,7 @@
 							
 							 
 							  
-							   <p class="pull-right"><a href=" {{url('/unfriend')}}/{{$friend->name}}/{{$friend->id}} " class="btn btn-info  "> Unfriend</a>&nbsp;
+							   <p class="pull-right"><a href=" {{url('/unfriend')}}/{{$friend->name}}/{{$friend->id}} " class="btn btn-default  "> Unfriend</a>&nbsp;
 							     
 							 
 

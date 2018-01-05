@@ -10,13 +10,47 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+//   Dispplay all posts
 Route::get('/', function () {
-    return view('welcome');
+
+    $posts = DB::table('posts')->leftJoin('profiles' , 'profiles.user_id' , 'posts.user_id')->leftJoin('users' , 'users.id' , 'posts.user_id')->get();
+
+
+    return view('welcome',  compact('posts'));
 });
 
+Route::get('/posts', function () {
+
+    $posts_json  = DB::table('posts')->leftJoin('profiles' , 'profiles.user_id' , 'posts.user_id')->leftJoin('users' , 'users.id' , 'posts.user_id')->take(2)->get();
+
+
+    return $posts_json;
+});
+
+
+
+Route::post('/addPost' , 'PostsController@addPost' );
+
+
 Route::get('/test', function () {
-    return Auth::user()->test();
+   
+    $notes = DB::table('notifications')  // unread
+             ->where('user_logged' , Auth::user()->id) 
+             ->get();
+
+          dd($notes);
+});
+
+
+
+
+Route::get('/count', function () {
+   
+    $count = App\Notifications::where('status' , 1)  // unread
+             ->where('user_logged' , Auth::user()->id) 
+             ->count();
+
+         echo $count;
 });
 
 
@@ -56,9 +90,15 @@ Route::group(['middleware' => 'auth'] , function () {
    Route::get('/declineFriendship/{name}/{id}' , 'ProfileController@declineFriendship');
    
    Route::get('/friends' , 'ProfileController@getFriends');
+
+   Route::get('/unfriend/{name}/{id}' , 'ProfileController@unfriend');
+   
+   Route::get('/notifications/{note_id}' , 'ProfileCOntroller@notifications');
     
    
 });
+
+
 
 
 

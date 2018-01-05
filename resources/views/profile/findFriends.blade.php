@@ -1,4 +1,6 @@
-@extends('profile.master') @section('content')
+@extends('profile.master')
+
+@section('content')
 
 <style>
 	input {
@@ -39,8 +41,8 @@
 
 						   <div class="row">
 						    <div class="col-sm-2">
-							    <img src="{{asset('img')}}/user_pics/{{$uList->pic}}" width="100px" height="100px" style="border-radius: 50%; height: 100px"
-								 id="profile_pics" />
+							    <a href="{{url('/profile')}}/{{$uList->slug}} "> <img src="{{asset('img')}}/user_pics/{{$uList->pic}}" width="100px" height="100px" style="border-radius: 50%; height: 100px"
+									id="profile_pics" /></a>
 							</div>
 
 							  <div class="col-sm-4">

@@ -18,5 +18,40 @@ window.Vue = require('vue');
 Vue.component('example', require('./components/Example.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    data: {
+        msg: 'Update Posts:',
+        content: "",
+        posts: []
+    },
+
+    created() {
+        axios.get('http://127.0.0.1:8000/posts' )
+        .then(response =>  {
+            this.posts = response.data;  //  We putting data in the posts array of tyhe data property method
+          
+        })
+        .catch(function (error){
+            console.log(error);  // show if there is a failure
+        });
+     },
+    
+  methods: {
+        addPost() {
+           
+           axios.post('http://127.0.0.1:8000/addPost' , {
+               content: this.content
+           })
+           .then(function (response) {
+               console.log("Post submitted successfully");  // Show if successful
+               if(response.status === 200){
+                alert("Post Submitted successfully");
+                this.posts = "Here"
+            }
+           })
+           .catch(function (error){
+               console.log(error);  // show if there is a failure
+           });
+        }
+    }
 });

@@ -15,9 +15,9 @@
     <!-- Styles -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-   <link href="{{ asset('css/fa-svg-with-js.css') }}" rel="stylesheet">
-   <link href="{{ asset('css/fa-solid.min.css') }}" rel="stylesheet">
+   
+   <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+   <link href="<?= asset('vendor/components/font-awesome/css/font-awesome.min.css') ?>" rel="stylesheet">
 
     {{--  scripts  --}}
     <script src="js/fontawesome.min.js"></script>
@@ -58,13 +58,38 @@
                              
                                  </a>
                              </li>
-                              <li><a href=" {{url('/friends')}} ">Friends (  {{  App\Friendships::where('user_requested' , Auth::user()->id)->where('status' , 1)->count()  }}  )</a></li>
-                             
+                            
                          @endif    
                     </ul>
+                    
+
+
 
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
+
+                            <li class="dropdown">
+                                 
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                            <img src="{{asset('img')}}/user_pics/{{Auth::user()->pic}}" width="30px"  height="30px" style="border-radius:50%" /> <span class="caret"></span>
+                                    </a>
+    
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                          <a href="{{ url('/editProfile') }}"> Edit Profile</a>
+                                            <a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault();
+                                                         document.getElementById('logout-form').submit();">
+                                                Logout
+                                            </a>
+                                            
+    
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
                         <!-- Authentication Links -->
                        
                         @if (Auth::guest())
@@ -73,29 +98,75 @@
                             <li><a href="{{ route('login') }}">Login</a></li>
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-                         <li> <a href=""> <img src="{{asset('img')}}/user_pics/{{Auth::user()->pic}}" width="30px"  height="30px" style="border-radius:50%" /></a></li>   
-                            <li class="dropdown">
+                        
+
+
+                         <li class="dropdown">
                                  
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ ucwords(Auth::user()->name) }} <span class="caret"></span>
-                                </a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                        <i class="fa fa-globe fa-2x" aria-hidden="true"></i><span class="badge" style="background:red; position: relative; top:-18px; right: 15px">  {{ 
+                            App\Notifications::where('status' , 1)  // unread
+                                ->where('user_hero' , Auth::user()->id) 
+                                ->count()
+                            
+                            }}</span>
+                            </a>
 
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                      <a href="{{ url('/editProfile') }}"> Edit PRofile</a>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-                                        
+                            <?php
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
+                                $notes = DB::table('users')  // unread
+                                 ->join('notifications' , 'users.id' , 'notifications.user_logged')
+                                ->where('user_hero' , Auth::user()->id)
+                                ->where('status' ,1) // unread notification
+                                ->orderBy('notifications.created_at' , 'DESC')
+                                ->get();
+                            
+                            ?>
+
+                            <ul class="dropdown-menu" role="menu">
+                                @foreach($notes as $note)
+                                
+                               
+                                  <a href="{{url('/notifications')}}/{{$note->id}} ">
+                                        <li>
+                                                <div class="row">
+                                                    <div class="col-md-2 ">
+                                                          <img src="{{asset('img')}}/user_pics/{{$note->pic}}"  width="30px"  height="30px" style="border-radius:50%; margin: 5px" />
+          
+                                                    </div>
+          
+                                                      <div class="col-md-10 ">
+                                                             <b style="color:green">{{ ucwords($note->name) }}</b>   <span style="color:black">{{ $note->note }}</span> 
+                                                      </div>
+                                                </div>
+                                               
+                                                 
+                                              </li>
+
+                                  </a>
+                                   
+                                @endforeach
+                            </ul>
+                        </li>
+
+                        <li><a href="{{url('/friends')}} "><i class="fa fa-users fa-2x" aria-hidden="true"></i>
+                            <span class="badge" style="background:red; position: relative; top:-18px; right: 15px">
+                                    {{  App\notifications::where('status' , 1) // UNread
+                                    ->where('user_hero' , Auth::user()->id)    
+                                    ->count() }}
+                            </span>
+                           
+                            </a>   
+                        </li>
+
+
+
+
+
+
+
+
+                          
                         @endif
                     </ul>
                 </div>
