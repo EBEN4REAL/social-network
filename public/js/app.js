@@ -1014,10 +1014,10 @@ var app = new Vue({
             axios.post('http://127.0.0.1:8000/addPost', {
                 content: this.content
             }).then(function (response) {
-                console.log("Post submitted successfully"); // Show if successful
+                console.log('Saved successfully');
                 if (response.status === 200) {
-                    alert("Post Submitted successfully");
-                    this.posts = "Here";
+
+                    app.posts = response.data;
                 }
             }).catch(function (error) {
                 console.log(error); // show if there is a failure

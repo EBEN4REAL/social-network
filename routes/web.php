@@ -21,15 +21,18 @@ Route::get('/', function () {
 
 Route::get('/posts', function () {
 
-    $posts_json  = DB::table('posts')->leftJoin('profiles' , 'profiles.user_id' , 'posts.user_id')->leftJoin('users' , 'users.id' , 'posts.user_id')->take(2)->get();
+    $posts_json  = DB::table('posts')->join('profiles' , 'profiles.user_id' , 'posts.user_id')->join('users' , 'users.id' , 'posts.user_id')->orderBy('posts.id' , 'desc')
+    ->take(3)->get();
 
-
+    
     return $posts_json;
 });
 
 
 
-Route::post('/addPost' , 'PostsController@addPost' );
+
+
+Route::post('/addPost' , 'PostsController@addPost');
 
 
 Route::get('/test', function () {
@@ -98,6 +101,10 @@ Route::group(['middleware' => 'auth'] , function () {
    
 });
 
+Route::get('/eben' , function(){
+    
+    return view('profile.eben');
+});
 
 
 

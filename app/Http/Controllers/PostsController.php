@@ -20,22 +20,22 @@ class PostsController extends Controller
 
     public function addPost(Request $request)
     {
-      $content = $request->content;
+      
+       $content = $request->content;
 
-      $createPost = DB::table('posts')
-      ->insert(['content' => $content, 'user_id' => Auth::user()->id , 'status' => 0 , 'created_at' =>  date("Y-m-d H:i:s") , 'updated_at' => date("Y-m-d H:i:s")]);
+       $createPost = DB::table('posts')->insert(['content' => $content , 'user_id' => Auth::user()->id , 'status' => 0 , 'created_at' => date("Y-m-d H:i:s") , 'updated_at' => date("Y-m-d H:i:s")]);
 
       if($createPost)
       {
         $posts_json  = DB::table('posts')
-        ->leftJoin('profiles' , 'profiles.user_id' , 'posts.user_id')
-        ->leftJoin('users' , 'users.id' , 'posts.user_id')
-        ->orderBy('posts.created_at' , 'desc')
-        ->take(2)
+        ->join('profiles' , 'profiles.user_id' , 'posts.user_id')
+        ->join('users' , 'posts.user_id' , 'users.id')
+        ->orderBy('posts.created_at' , 'DESC')->take(3)
         ->get();
+        
 
 
-        return $posts_json;
+        return  $posts_json;
       }
       
     }
@@ -43,3 +43,4 @@ class PostsController extends Controller
 
 
 }
+

@@ -17,18 +17,18 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 
-const app = new Vue({
+const app2 = new Vue({
     el: '#app',
     data: {
         msg: 'Update Posts:',
         content: "",
-        posts: []
+        parameters: []
     },
 
     created() {
-        axios.get('http://127.0.0.1:8000/posts')
+        axios.get('https://api.thingspeak.com/channels/344737/feeds.json?api_key=2JBUCVBN71D4FCM9&field1=0')
         .then(response =>  {
-            this.posts = response.data;  //  We putting data in the posts array of tyhe data property method
+            this.parameters = response.data;  //  We putting data in the posts array of tyhe data property method
           
         })
         .catch(function (error){
@@ -36,26 +36,6 @@ const app = new Vue({
         });
      },
     
-  methods: {
-        addPost(){
-           
-           axios.post('http://127.0.0.1:8000/addPost' , {
-               content: this.content
-           })
-           .then(function (response) {
-               console.log('Saved successfully');  
-               if(response.status === 200){
 
-                
-
-                app.posts = response.data;
-                
-            }
-           })
-           .catch(function (error){
-               console.log(error);  // show if there is a failure
-           });
-        }
-    }
 });
 

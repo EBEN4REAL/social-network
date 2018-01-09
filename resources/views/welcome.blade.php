@@ -94,7 +94,7 @@
             <div class="container" id="app">
                 
                    @{{ msg }}
-                   <form method="" enctype="multipart/form-data" v-on:submit.prevent = 'addPost' >
+                   <form method="post" enctype="multipart/form-data" v-on:submit.prevent = 'addPost' >
                       {{ csrf_field() }}
                       <textarea v-model="content"></textarea>
                       <button type="submit" class="btn btn-success" style="border-radius: 0">Post</button>
@@ -107,7 +107,7 @@
                 <div v-for = "post in posts">
                      <div class="col-md-12" style="background-color:#fff;padding-top: 10px">
                         <div class="col-md-2 pull-left">
-                                <img src="{{asset('img')}}/user_pics/" width="80px" height="80px" 
+                                <img :src="'{{url('http://127.0.0.1:8000')}}/img/user_pics/' + post.pic" width="80px" height="80px" 
                                 id="profile_pics" />
                         </div>
 
@@ -122,7 +122,7 @@
                                 
             
                     </div>
-                </div> 
+                </div>   
                
             
         
