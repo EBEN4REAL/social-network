@@ -41,9 +41,9 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'db4free.ne'), // 127.0.0.1
+            'host' => env('DB_HOST', 'db4free.net'), // 127.0.0.1
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'eben-social-network'), // forge
+            'database' => env('DB_DATABASE', 'larabook'), // forge
             'username' => env('DB_USERNAME', 'larabook'), // forge
             'password' => env('DB_PASSWORD', 'larabook'),
             'unix_socket' => env('DB_SOCKET', ''),
