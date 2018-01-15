@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 40);
+/******/ 	return __webpack_require__(__webpack_require__.s = 43);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -42951,15 +42951,17 @@ if (false) {
 }
 
 /***/ }),
-/* 40 */
+/* 40 */,
+/* 41 */,
+/* 42 */,
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(41);
-module.exports = __webpack_require__(42);
+module.exports = __webpack_require__(44);
 
 
 /***/ }),
-/* 41 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -42984,16 +42986,15 @@ Vue.component('example', __webpack_require__(36));
 var app = new Vue({
     el: '#app',
     data: {
-        msg: 'Say something:',
-        content: "",
-        posts: []
+        msg: 'Post something:',
+        privateMessages: [],
+        singleMsgs: []
+
     },
 
     created: function created() {
-        var _this = this;
-
-        axios.get('http://127.0.0.1:8000/posts').then(function (response) {
-            _this.posts = response.data; //  We putting data in the posts array of tyhe data property method
+        axios.get('http://127.0.0.1:8000/getMessages').then(function (response) {
+            app.privateMessages = response.data; //  We putting data in the posts array of tyhe data property method
         }).catch(function (error) {
             console.log(error); // show if there is a failure
         });
@@ -43001,31 +43002,17 @@ var app = new Vue({
 
 
     methods: {
-        addPost: function addPost() {
+        message: function message(id) {
 
-            axios.post('http://127.0.0.1:8000/addPost', {
-                content: this.content
-
-            }).then(function (response) {
-                console.log('Saved successfully');
-
-                if (response.status === 200) {
-
-                    app.posts = response.data;
-                    app.content = "";
-                }
+            axios.get('http://127.0.0.1:8000/getMessages/' + id).then(function (response) {
+                console.log(response.data);
+                app.singleMsgs = response.data;
             }).catch(function (error) {
-                console.log(error); // show if there is a failure
+                console.log(error);
             });
         }
     }
 });
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

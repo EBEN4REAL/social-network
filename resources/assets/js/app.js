@@ -20,7 +20,7 @@ Vue.component('example', require('./components/Example.vue'));
 const app = new Vue({
     el: '#app',
     data: {
-        msg: 'Update Posts:',
+        msg: 'Say something:',
         content: "",
         posts: []
     },
@@ -41,14 +41,17 @@ const app = new Vue({
            
            axios.post('http://127.0.0.1:8000/addPost' , {
                content: this.content
+               
            })
            .then(function (response) {
-               console.log('Saved successfully');  
+               console.log('Saved successfully'); 
+               
                if(response.status === 200){
 
                 
 
                 app.posts = response.data;
+                app.content = "";
                 
             }
            })

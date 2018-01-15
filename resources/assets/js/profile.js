@@ -17,25 +17,40 @@ window.Vue = require('vue');
 
 Vue.component('example', require('./components/Example.vue'));
 
-const app2 = new Vue({
+const app = new Vue({
     el: '#app',
     data: {
-        msg: 'Update Posts:',
-        content: "",
-        parameters: []
+        msg: 'Post something:',
+        privateMessages: [],
+        singleMsgs: []
+        
     },
 
     created() {
-        axios.get('https://api.thingspeak.com/channels/344737/feeds.json?api_key=2JBUCVBN71D4FCM9&field1=0')
+        axios.get('http://127.0.0.1:8000/getMessages')
         .then(response =>  {
-            this.parameters = response.data;  //  We putting data in the posts array of tyhe data property method
+            app.privateMessages = response.data;  //  We putting data in the posts array of tyhe data property method
           
         })
         .catch(function (error){
             console.log(error);  // show if there is a failure
+            
         });
      },
     
-
+  methods: {
+      message: function(id){
+          
+        axios.get('http://127.0.0.1:8000/getMessages/' + id)
+        .then(response => {
+            console.log(response.data);
+            app.singleMsgs = response.data;
+        })
+        .catch(function (error){
+          console.log(error);
+        });
+      }
+    }
 });
 
+  

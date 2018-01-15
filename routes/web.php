@@ -11,6 +11,44 @@
 |
 */
 //   Dispplay all posts
+
+Route::get('/messages' , function(){
+
+  return view('messages');
+});
+
+
+Route::get('/getMessages' , function(){
+
+  $allUsers = DB::table('users')->where('id' , '!=' , Auth::user()->id)->get();
+
+  return $allUsers;
+});
+
+Route::get('/getMessages/{id}' , function($id){
+    
+    $checkConversation = DB::table('conversations')->where('user_1' , Auth::user()->id)
+    ->where('user_2' , $id)->get();
+
+   if(count($checkConversation) != 0){
+       // fetch messgaes
+    //    echo $checkConversation[0]->id;
+    //    echo $checkConversation[3]->id;
+
+    $userMessages = DB::table('messages')
+    ->where('messages.conversation_id' , $checkConversation[0]->id )->get();
+
+    return $userMessages;
+
+   }
+   else{
+     echo "No previous conversations with this user";
+   }
+
+
+
+});
+
 Route::get('/', function () {
 
     $posts = DB::table('posts')->leftJoin('profiles' , 'profiles.user_id' , 'posts.user_id')->leftJoin('users' , 'users.id' , 'posts.user_id')->get();

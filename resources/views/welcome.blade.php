@@ -57,6 +57,12 @@
             .content {
                 text-align: center;
             }
+            @media (min-width: 1200px){
+
+            .container {
+            width: 1442px;
+            }
+        }
 
             .title {
                 font-size: 84px;
@@ -75,6 +81,18 @@
             .m-b-md {
                 margin-bottom: 30px;
             }
+            #postText{
+                border:none;
+            }
+            textarea:focus{
+                border:none;
+            }
+            .left-sidebar{
+                height: 100vh;
+            }
+            .right-sidebar{
+                height: 100vh;
+            }
         </style>
     </head>
     <body>
@@ -91,44 +109,129 @@
                 </div>
             @endif
 
-            <div class="container" id="app">
-                
-                   @{{ msg }}
-                   <form method="post" enctype="multipart/form-data" v-on:submit.prevent = 'addPost' >
-                      {{ csrf_field() }}
-                      <textarea v-model="content"></textarea>
-                      <button type="submit" class="btn btn-success" style="border-radius: 0">Post</button>
-                   </form>
-
-               
-               
+            
 
 
-                <div v-for = "post in posts">
-                     <div class="col-md-12" style="background-color:#fff;padding-top: 10px">
-                        <div class="col-md-2 pull-left">
-                                <img :src="'{{url('http://127.0.0.1:8000')}}/img/user_pics/' + post.pic" width="80px" height="80px" 
-                                id="profile_pics" />
+            <div class="container" id="app" style="margin-top: 550px;">
+                <div class="row">
+                        <div class="col-md-3 left-sidebar" style="background:white">
+                                <h3 class="text-center">LEFT  SIDEBAR</h3>
+                                <hr>
+         
+                         </div>
+
+                         <div class="col-md-6">
+                                @if(Auth::check())
+                                <div class="panel panel-default" >
+                                       
+                                      
+                                        <div class="panel-heading">@{{ msg }}</div>
+
+                                        <div class="row"  id="postID">
+                                            <div class="col-xs-2">
+
+                                                
+                                                <img src="{{asset('img')}}/user_pics/{{Auth::user()->pic}}" width="70px"  height="70px" style="border-radius:25%; padding:10px" />
+
+                                            </div>
+                                            
+                                            <div class="col-xs-10">
+                                                    <form method="post" enctype="multipart/form-data" v-on:submit.prevent = 'addPost' >
+                                                    {{ csrf_field() }}
+                                                    <textarea cols="65" rows="2" id="postText" v-model="content" id="postContent"></textarea>
+                                                    <button type="submit" class="btn btn-primary pull-right" style="border-radius:0; margin-right: 10px" id="postButton">Post</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        
+                        
+                                        <div class="panel-body">
+                                           
+                                        </div>
+                                </div>
+                                @endif
+
+                                <div class="panel panel-default" style="padding-bottom: 300px">
+                                        <div class="panel-heading ">Posts</div>
+                        
+                                        <div class="panel-body">
+                                           <div v-for = "post in posts" style="border-bottom:1px solid black">
+                                                <div class="col-md-12" style="background-color:#fff;padding-top: 10px">
+                                                    <div class="col-md-2 pull-left">
+                                                            <img :src="'{{url('http://127.0.0.1:8000')}}/img/user_pics/' + post.pic" width="80px" height="80px" 
+                                                            id="profile_pics" />
+                                                    </div>
+
+                                                       <div class="col-md-10">
+                                                            <h3>@{{ post.name }}</h3>
+                                                            <p> <i class="fa fa-globe" aria-hidden="true"></i> @{{ post.city}} - @{{ post.country }}</p>
+                                                            <p><b> Gender: </b>  @{{ post.gender }} </p>
+                                                            <small> @{{ post.created_at }} </small>
+                                                       </div>
+
+                                                         @{{ post.content }}
+                                                         
+                                                            
+                                        
+                                                </div>
+                                                <br>
+                                               
+                                        </div>
+                                        </div>
+                                </div>
+                            
                         </div>
 
-                        <div class="col-md-10">
-                                <h3>@{{ post.name }}</h3>
-                                <p> <i class="fa fa-globe" aria-hidden="true"></i> @{{ post.city}} - @{{ post.country }}</p>
-                                <p><b> Gender: </b>  @{{ post.gender }} </p>
-                                <small> @{{ post.created_at }} </small>
-                            </div>
+                        <div class="col-md-3 right-sidebar" style="background:white">
+                                <h3 class="text-center">RIGHT  SIDEBAR</h3>
+                                <hr>
+            
+                         </div>
 
-                                @{{ post.content }}
-                                
-            
-                    </div>
-                </div>   
-               
-            
+                </div>
+                    
+                    
+                       
         
-        </div>
+                       
+        
+                        
+                  
+        
+                        
+                    </div>
+                </div>
+        
+
+
+
+
+          
+    
+   
 
 
         <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
+
+        <script>
+            $(document).ready(function(){
+                $("#postButton").hide();
+               
+                $("#postID").mouseover( function(){
+                    $("#postButton").show();
+                    $("textarea").attr('rows' , '6');
+                   
+
+                })
+                $("#postID").mouseout( function(){
+                    $("#postButton").hide();
+                    $("textarea").attr('rows' , '2');
+                  
+                })
+
+  
+            });
+        </script>
     </body>
 </html>
