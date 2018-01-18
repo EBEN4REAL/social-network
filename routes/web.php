@@ -20,30 +20,44 @@ Route::get('/messages' , function(){
 
 Route::get('/getMessages' , function(){
 
-  $allUsers = DB::table('users')->where('id' , '!=' , Auth::user()->id)->get();
+  $allUsers1 = DB::table('users')->Join('conversations' , 'users.id' , 'conversations.user_1')->where('conversations.user_2'  , Auth::user()->id)->get();
 
-  return $allUsers;
+//   return $allUsers1;
+
+  $allUser2 = DB::table('users')->Join('conversations' , 'users.id' , 'conversations.user_2')->where('conversations.user_1'  , Auth::user()->id)->get();
+
+//   return $allUser2;
+
+   $allConv =  array_merge($allUsers1->toArray() , $allUser2->toArray());
+    
+   return $allConv; 
+  
 });
 
 Route::get('/getMessages/{id}' , function($id){
-    
-    $checkConversation = DB::table('conversations')->where('user_1' , Auth::user()->id)
-    ->where('user_2' , $id)->get();
+      
+//     $checkConversation = DB::table('conversations')->where('user_1' , Auth::user()->id)
+//     ->Where('user_2' , $id)->get();
 
-   if(count($checkConversation) != 0){
-       // fetch messgaes
-    //    echo $checkConversation[0]->id;
-    //    echo $checkConversation[3]->id;
+//    if(count($checkConversation) != 0){
+//        // fetch messgaes
+//     //    echo $checkConversation[0]->id;
+//     //    echo $checkConversation[3]->id;
 
-    $userMessages = DB::table('messages')
-    ->where('messages.conversation_id' , $checkConversation[0]->id )->get();
+//     $userMessages = DB::table('messages')
+//     ->where('messages.conversation_id' , $checkConversation[0]->id )->get();
+
+//     return $userMessages;
+
+//    }
+//    else{
+//      echo "No previous conversations with this user";
+//    }
+
+$userMessages = DB::table('messages')->Join('users' , 'users.id' ,  'messages.user_from')
+    ->where('messages.conversation_id' , $id)->get();
 
     return $userMessages;
-
-   }
-   else{
-     echo "No previous conversations with this user";
-   }
 
 
 
